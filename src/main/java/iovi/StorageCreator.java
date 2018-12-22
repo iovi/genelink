@@ -2,6 +2,6 @@ package iovi;
 
 public class StorageCreator {
     public static StorageService createStorage(){
-        return new DummyStorageService();
+        return new H2StorageService("genelink1");
     }
 }

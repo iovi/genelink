@@ -34,7 +34,7 @@ public class GenelinkController {
             try{
                 JSONObject inputJson = (JSONObject) parser.parse(reader);
                 String originalLink=inputJson.get("original").toString();
-                outputJson.put("link",storageService.storeLink(originalLink));
+                outputJson.put("link","/l/"+storageService.storeLink(originalLink));
 
             } catch (Exception e) {
                 System.err.print("JSONException"+e.getMessage());
