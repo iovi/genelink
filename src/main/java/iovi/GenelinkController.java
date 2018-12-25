@@ -4,6 +4,7 @@ package iovi;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -13,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 
@@ -34,7 +36,12 @@ public class GenelinkController {
             try{
                 JSONObject inputJson = (JSONObject) parser.parse(reader);
                 String originalLink=inputJson.get("original").toString();
-                outputJson.put("link","/l/"+storageService.storeLink(originalLink));
+                String key=storageService.getKeyByLink(originalLink);
+                if (key==null){
+                    key=storageService.storeLink(originalLink);
+                }
+
+                outputJson.put("link","/l/"+key);
 
             } catch (Exception e) {
                 System.err.print("JSONException"+e.getMessage());
@@ -44,6 +51,22 @@ public class GenelinkController {
         }
         return outputJson;
     }
+
+    /** Метод формирования статистики для ссылки*/
+    @RequestMapping(value = "/stats/{key}", method = GET)
+    public @ResponseBody JSONObject linkStat(@PathVariable("key") String key) {
+
+        JSONObject outputJson=new JSONObject();
+        String link=storageService.getLinkByKey(key);
+        int count=storageService.getLinkTotalCount(key);
+        int rank=storageService.getLinkRank(key);
+        outputJson.put("original",link);
+        outputJson.put("link",key);
+        outputJson.put("rank",rank);
+        outputJson.put("count",count);
+        return outputJson;
+    }
+
 
 
 }
