@@ -1,5 +1,7 @@
 package iovi;
 
+import com.sun.org.glassfish.external.statistics.Statistic;
+
 import java.sql.*;
 
 public class H2StorageService implements StorageService{
@@ -11,7 +13,6 @@ public class H2StorageService implements StorageService{
         try {
             Class.forName("org.h2.Driver").newInstance();
             connection = DriverManager.getConnection("jdbc:h2:./"+dbName, "sa", "");
-            connection.setAutoCommit(false);
             Statement st = null;
             st = connection.createStatement();
             st.execute("create table IF NOT EXISTS links (link varchar("+ LINK_MAX_LENGTH +") primary key," +
@@ -37,12 +38,9 @@ public class H2StorageService implements StorageService{
             ResultSet resultSet;
             Statement statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT LAST_INSERT_ID()");
-            if (resultSet.next()) {
+            if (resultSet.next())
                 key = resultSet.getString(1);
-                storeHistory(key);
-                connection.commit();
-            } else
-                connection.rollback();
+
 
         } catch (Exception e) {
             System.err.print(e.getMessage());
@@ -50,7 +48,8 @@ public class H2StorageService implements StorageService{
         return key;
     }
 
-    void storeHistory(String key){
+    @Override
+    public void storeHistory(String key){
         try {
             String query="insert into request_history values (?,CURRENT_TIMESTAMP())";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -74,8 +73,8 @@ public class H2StorageService implements StorageService{
             resultSet=preparedStatement.executeQuery();
             if (resultSet.next()) {
                 key = resultSet.getString(1);
-                storeHistory(key);
-                connection.commit();
+            }else{
+                System.err.print("No data found in "+Thread.currentThread().getStackTrace());
             }
         }catch (SQLException e){
             System.err.print(e.getMessage());
@@ -95,6 +94,8 @@ public class H2StorageService implements StorageService{
             resultSet=preparedStatement.executeQuery();
             if (resultSet.next()) {
                 link = resultSet.getString(1);
+            }else{
+                System.err.print("No data found in "+Thread.currentThread().getStackTrace());
             }
         }catch (SQLException e){
             System.err.print(e.getMessage());
@@ -112,43 +113,35 @@ public class H2StorageService implements StorageService{
         super.finalize();
     }
 
-    public int getLinkRank(String key){
-        int count=0;
-        String query = "select rownum from " +
-                "(select link_key, count(*) cnt from request_history  group by link_key order by cnt desc)" +
-                " where link_key=?";
+    @Override
+    public Statistics getLinkStatistics(String key){
+        Statistics stat=null;
+        String query = "select cnt,rank from " +
+                "(select link_key,rownum rank, cnt from " +
+                "(select link_key, count(*) cnt from request_history  group by link_key order by cnt desc)) " +
+                "where link_key=?";
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, key);
             ResultSet resultSet;
             resultSet=preparedStatement.executeQuery();
             if (resultSet.next()) {
-                count = resultSet.getInt(1);
+                stat = new Statistics(resultSet.getInt(1),resultSet.getInt(2));
+            }else{
+                System.err.print("No data found in "+Thread.currentThread().getStackTrace());
             }
         }catch (Exception e){
             System.err.print(e.getMessage());
         }
-        return count;
+        return stat;
 
     }
 
-    public int getLinkTotalCount (String key){
-        int rank=0;
-        String query = "select count(*) cnt from request_history where link_key=?";
-        try{
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, key);
-            ResultSet resultSet;
-            resultSet=preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                rank = resultSet.getInt(1);
-            }
-        }catch (Exception e){
-            System.err.print(e.getMessage());
-        }
-        return rank;
+    @Override
+    public Statistics[] getAllStatistics(int itemsOnPage,int pageNumber){
+        Statistics stats[]=null;
+        return stats;
     }
-
 }
 
 

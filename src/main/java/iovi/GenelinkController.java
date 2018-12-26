@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,18 +54,28 @@ public class GenelinkController {
         return outputJson;
     }
 
+    /** Метод перенаправления*/
+    @RequestMapping(value = "/l/{key}")
+    public RedirectView redirect(@PathVariable("key") String key) {
+        String link=storageService.getLinkByKey(key);
+        storageService.storeHistory(key);
+        return new RedirectView(link);
+    }
+
+
     /** Метод формирования статистики для ссылки*/
     @RequestMapping(value = "/stats/{key}", method = GET)
     public @ResponseBody JSONObject linkStat(@PathVariable("key") String key) {
 
         JSONObject outputJson=new JSONObject();
         String link=storageService.getLinkByKey(key);
-        int count=storageService.getLinkTotalCount(key);
-        int rank=storageService.getLinkRank(key);
+        Statistics statistics=storageService.getLinkStatistics(key);
         outputJson.put("original",link);
         outputJson.put("link",key);
-        outputJson.put("rank",rank);
-        outputJson.put("count",count);
+        if (statistics!=null){
+            outputJson.put("rank",statistics.getRank());
+            outputJson.put("count",statistics.getCount());
+        }
         return outputJson;
     }
 
