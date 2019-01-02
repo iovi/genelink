@@ -13,11 +13,10 @@ public class H2StorageService implements StorageService{
         try {
             Class.forName("org.h2.Driver").newInstance();
             connection = DriverManager.getConnection("jdbc:h2:./"+dbName, "sa", "");
-            Statement st = null;
-            st = connection.createStatement();
-            st.execute("create table IF NOT EXISTS links (link varchar("+ LINK_MAX_LENGTH +") primary key," +
+            Statement statement = connection.createStatement();
+            statement.execute("create table IF NOT EXISTS links (link varchar("+ LINK_MAX_LENGTH +") primary key," +
                     "newlink_key bigint auto_increment);");
-            st.execute("create table IF NOT EXISTS request_history (link_key bigint," +
+            statement.execute("create table IF NOT EXISTS request_history (link_key bigint," +
                     "request_time timestamp not null," +
                     "foreign key (link_key) references links(newlink_key))");
         }catch (Exception e) {
@@ -73,8 +72,6 @@ public class H2StorageService implements StorageService{
             resultSet=preparedStatement.executeQuery();
             if (resultSet.next()) {
                 key = resultSet.getString(1);
-            }else{
-                System.err.print("No data found in "+Thread.currentThread().getStackTrace());
             }
         }catch (SQLException e){
             System.err.print(e.getMessage());
@@ -94,8 +91,6 @@ public class H2StorageService implements StorageService{
             resultSet=preparedStatement.executeQuery();
             if (resultSet.next()) {
                 link = resultSet.getString(1);
-            }else{
-                System.err.print("No data found in "+Thread.currentThread().getStackTrace());
             }
         }catch (SQLException e){
             System.err.print(e.getMessage());
@@ -116,19 +111,16 @@ public class H2StorageService implements StorageService{
     @Override
     public Statistics getLinkStatistics(String key){
         Statistics stat=null;
-        String query = "select cnt,rank from " +
-                "(select link_key,rownum rank, cnt from " +
-                "(select link_key, count(*) cnt from request_history  group by link_key order by cnt desc)) " +
-                "where link_key=?";
+        String query = "select * from (select *,rownum rank from (select l.link,l.newlink_key, nvl(h.cnt,0) from " +
+                "(select link_key, count(*) cnt from request_history group by link_key) h " +
+                "right join links l on h.link_key=l.newlink_key order by cnt desc)) where newlink_key=?";
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, key);
             ResultSet resultSet;
             resultSet=preparedStatement.executeQuery();
             if (resultSet.next()) {
-                stat = new Statistics(resultSet.getInt(1),resultSet.getInt(2));
-            }else{
-                System.err.print("No data found in "+Thread.currentThread().getStackTrace());
+                stat = new Statistics(resultSet.getString(1),resultSet.getString(2),resultSet.getInt(3),resultSet.getInt(4));
             }
         }catch (Exception e){
             System.err.print(e.getMessage());
@@ -139,7 +131,22 @@ public class H2StorageService implements StorageService{
 
     @Override
     public Statistics[] getAllStatistics(int itemsOnPage,int pageNumber){
-        Statistics stats[]=null;
+        Statistics stats[]=new Statistics[itemsOnPage];
+        String query = "select * from (select *,rownum rank from (select l.link,l.newlink_key, nvl(h.cnt,0) from " +
+                "(select link_key, count(*) cnt from request_history group by link_key) h " +
+                "right join links l on h.link_key=l.newlink_key order by cnt desc)) where rank between ? and ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, (pageNumber-1)*itemsOnPage+1);
+            preparedStatement.setInt(2, pageNumber*itemsOnPage);
+            ResultSet resultSet;
+            resultSet=preparedStatement.executeQuery();
+            for(int i=0;resultSet.next();i++) {
+                stats[i] = new Statistics(resultSet.getString(1), resultSet.getString(2), resultSet.getInt(3), resultSet.getInt(4));
+            }
+        }catch (Exception e){
+            System.err.print("error: "+e.getMessage());
+        }
         return stats;
     }
 }

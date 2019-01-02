@@ -3,6 +3,8 @@ package iovi;
 public class Statistics {
     int count;
     int rank;
+    String originalLink;
+    String key;
 
     public int getCount() {
         return count;
@@ -10,6 +12,14 @@ public class Statistics {
 
     public int getRank() {
         return rank;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getOriginalLink() {
+        return originalLink;
     }
 
     public void setCount(int count) {
@@ -20,8 +30,18 @@ public class Statistics {
         this.rank = rank;
     }
 
-    public Statistics(int count, int rank){
+    public void setOriginalLink(String originalLink) {
+        this.originalLink = originalLink;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public Statistics(String originalLink, String key, int count,int rank){
         this.count=count;
         this.rank=rank;
+        this.originalLink=originalLink;
+        this.key=key;
     }
 }
