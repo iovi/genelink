@@ -897,3 +897,167 @@ Caused by: java.lang.IllegalStateException: The file is locked: nio:C:/Users/Asp
 	at org.h2.mvstore.FileStore.open(FileStore.java:173)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:350)
 	... 50 more
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:57:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 15:58:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "null"
+Data conversion error converting "null"; SQL statement:
+select link from links where newlink_key=? [22018-197]
+2019-01-03 16:00:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Ошибка преобразования данных при конвертации "page=1&count=20"
+Data conversion error converting "page=1&count=20"; SQL statement:
+select * from (select *,rownum rank from (select l.link,l.newlink_key, nvl(h.cnt,0) from (select link_key, count(*) cnt from request_history group by link_key) h right join links l on h.link_key=l.newlink_key order by cnt desc)) where newlink_key=? [22018-197]
