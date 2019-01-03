@@ -2,27 +2,44 @@ package iovi.storage.memory;
 
 import iovi.Statistics;
 import iovi.settings.Settings;
+import iovi.settings.SettingsExtractor;
 import iovi.storage.StorageService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import static java.util.Collections.synchronizedMap;
+import static java.util.Collections.*;
 
 public class MemoryWithDbStorageService implements StorageService,InMemoryStorageService {
     Map<String,String> storage;
+    List<String> history;
+
     StorageService dbService;
 
     public MemoryWithDbStorageService(StorageService dbService){
 
         storage=synchronizedMap(new HashMap<>());
+        history=synchronizedList(new ArrayList<String>());
         this.dbService = dbService;
     }
 
     @Override
     public void storeHistory(String key) {
-        dbService.storeHistory(key);
+        int localHistorySize=SettingsExtractor.extractSettings().getLocalHistorySize();
+        if (history.size()> localHistorySize)
+            storeHistory2Db();
+        else
+            history.add(key);
     }
 
+    private void storeHistory2Db(){
+        for(String key:history){
+            dbService.storeHistory(key);
+        }
+        history.clear();
+        System.out.println("history stored");
+    }
     @Override
     public String getKeyByLink(String link){
         return dbService.getKeyByLink(link);
@@ -49,11 +66,13 @@ public class MemoryWithDbStorageService implements StorageService,InMemoryStorag
 
     @Override
     public Statistics getLinkStatistics(String key) {
+        storeHistory2Db();
         return dbService.getLinkStatistics(key);
     }
 
     @Override
     public Statistics[] getAllStatistics(int itemsOnPage, int pageNumber) {
+        storeHistory2Db();
         return dbService.getAllStatistics(itemsOnPage,pageNumber);
     }
 

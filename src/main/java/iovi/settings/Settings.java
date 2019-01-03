@@ -12,6 +12,8 @@ public class Settings {
     int linksInMemoryCount;
     /**Порог количества переходов по ссылке, после которого она записывается в память*/
     int redirectionsBarrier;
+    /**Длина истории в памяти*/
+    int localHistorySize;
 
     public int getBarrierForMemory() {
         return redirectionsBarrier;
@@ -27,6 +29,10 @@ public class Settings {
 
     public String getDbName() {
         return dbName;
+    }
+
+    public int getLocalHistorySize() {
+        return localHistorySize;
     }
 
     public void setBarrierForMemory(int barrierForMemory) {
@@ -45,4 +51,7 @@ public class Settings {
         this.wakeUpPeriod = wakeUpPeriod;
     }
 
+    public void setLocalHistorySize(int localHistorySize) {
+        this.localHistorySize = localHistorySize;
+    }
 }

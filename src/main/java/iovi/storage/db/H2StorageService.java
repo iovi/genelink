@@ -13,7 +13,7 @@ public class H2StorageService implements StorageService {
     public H2StorageService(String dbName){
         try {
             Class.forName("org.h2.Driver").newInstance();
-            connection = DriverManager.getConnection("jdbc:h2:./"+dbName, "sa", "");
+            connection = DriverManager.getConnection("jdbc:h2:./"+dbName+";LOCK_MODE=3", "sa", "");
             Statement statement = connection.createStatement();
             statement.execute("create table IF NOT EXISTS links (link varchar("+ LINK_MAX_LENGTH +") primary key," +
                     "newlink_key bigint auto_increment);");
