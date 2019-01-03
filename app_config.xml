@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Settings>
+    <dbName>genelink3</dbName>
+    <wakeUpPeriod>10000</wakeUpPeriod>
+    <linksInMemoryCount>100</linksInMemoryCount>
+    <redirectionsBarrier>5</redirectionsBarrier>
+</Settings>

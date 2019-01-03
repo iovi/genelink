@@ -1,7 +1,11 @@
-package iovi;
+package iovi.storage.memory;
+
+import iovi.settings.Settings;
+import iovi.settings.SettingsExtractor;
+import iovi.storage.memory.InMemoryStorageService;
 
 /** Поток, занимающийся периодическим обновлением хранилища в памяти*/
-public class MemoryStorageUpdater extends Thread {
+public class MemoryUpdater extends Thread {
     long wakeUpPeriod;
     InMemoryStorageService service;
 
@@ -11,16 +15,18 @@ public class MemoryStorageUpdater extends Thread {
      * @param wakeUpPeriod период удалениея в мс
      * @param service - сервис хранилища в памяти (реализует {@link InMemoryStorageService})
      * */
-    public MemoryStorageUpdater(long wakeUpPeriod, InMemoryStorageService service){
+    public MemoryUpdater(long wakeUpPeriod, InMemoryStorageService service){
         this.wakeUpPeriod=wakeUpPeriod;
         this.service=service;
     }
 
     @Override
     public void run() {
+        Settings settings= SettingsExtractor.extractSettings();
         for(;;) {
             try {
-                service.buildInMemoryStorage();
+
+                service.buildInMemoryStorage(settings);
                 Thread.sleep(wakeUpPeriod);
             } catch (InterruptedException e) {
                 System.err.println(e.getMessage());

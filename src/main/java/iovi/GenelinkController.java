@@ -1,6 +1,8 @@
 package iovi;
 
 
+import iovi.storage.StorageProvider;
+import iovi.storage.StorageService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -9,10 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -26,7 +26,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 public class GenelinkController {
 
-    StorageService storageService=StorageCreator.getInstance().getStorageService();
+    StorageService storageService= StorageProvider.getInstance().getStorageService();
 
         /** Метод генерации короткой ссылки для передаваемой*/
     @RequestMapping(value = "/generate", method = POST)
@@ -61,7 +61,7 @@ public class GenelinkController {
     @RequestMapping(value = "/l/{key}")
     public RedirectView redirect(@PathVariable("key") String key) {
         String link=storageService.getLinkByKey(key);
-        //storageService.storeHistory(key);
+        storageService.storeHistory(key);
         return new RedirectView(link);
     }
 

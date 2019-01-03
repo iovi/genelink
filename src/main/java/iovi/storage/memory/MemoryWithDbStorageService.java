@@ -1,4 +1,8 @@
-package iovi;
+package iovi.storage.memory;
+
+import iovi.Statistics;
+import iovi.settings.Settings;
+import iovi.storage.StorageService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,12 +58,12 @@ public class MemoryWithDbStorageService implements StorageService,InMemoryStorag
     }
 
     @Override
-    public void buildInMemoryStorage(){
-        Statistics stats[]= dbService.getAllStatistics(100,1);
+    public void buildInMemoryStorage(Settings settings){
+        Statistics stats[]= dbService.getAllStatistics(settings.getLinksInMemoryCount(),1);
         storage.clear();
         System.out.println("\nStorage cleared");
         for (int i=0;i<stats.length && stats[i]!=null;i++){
-            if (stats[i].getCount()>5){
+            if (stats[i].getCount()>settings.getBarrierForMemory()){
                 storage.put(stats[i].getKey(),stats[i].getOriginalLink());
                 System.out.println(stats[i].getKey()+" Added to storage");
             }

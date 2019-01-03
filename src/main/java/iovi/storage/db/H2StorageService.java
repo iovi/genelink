@@ -1,10 +1,11 @@
-package iovi;
+package iovi.storage.db;
 
-import com.sun.org.glassfish.external.statistics.Statistic;
+import iovi.Statistics;
+import iovi.storage.StorageService;
 
 import java.sql.*;
 
-public class H2StorageService implements StorageService{
+public class H2StorageService implements StorageService {
 
     Connection connection;
     final int LINK_MAX_LENGTH =1000;

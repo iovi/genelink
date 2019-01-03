@@ -1,7 +1,7 @@
-package iovi;
+package iovi.storage;
 
 
-import java.util.ArrayList;
+import iovi.Statistics;
 
 public interface StorageService {
     String storeLink(String originalLink);
