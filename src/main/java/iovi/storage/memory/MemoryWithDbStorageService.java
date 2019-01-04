@@ -25,20 +25,24 @@ public class MemoryWithDbStorageService implements StorageService,InMemoryStorag
     }
 
     @Override
-    public void storeHistory(String key) {
+    public boolean storeHistory(String key) {
+        boolean result=true;
         int localHistorySize=SettingsExtractor.extractSettings().getLocalHistorySize();
         if (history.size()> localHistorySize)
-            storeHistory2Db();
+            result=storeHistory2Db();
         else
             history.add(key);
+        return result;
     }
 
-    private void storeHistory2Db(){
+    private boolean storeHistory2Db(){
+        boolean result=false;
         for(String key:history){
-            dbService.storeHistory(key);
+            result=dbService.storeHistory(key);
         }
         history.clear();
         System.out.println("history stored");
+        return result;
     }
     @Override
     public String getKeyByLink(String link){

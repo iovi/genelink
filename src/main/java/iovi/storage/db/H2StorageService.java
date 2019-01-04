@@ -5,11 +5,21 @@ import iovi.storage.StorageService;
 
 import java.sql.*;
 
+/**StorageService, использующий для хранение файл БД h2*/
 public class H2StorageService implements StorageService {
 
     Connection connection;
     final int LINK_MAX_LENGTH =1000;
 
+    /**В конструкторе создается подключение к БД в файле с указанным именем, создаются таблицы (при их отсутствии):
+     * <ul>
+     * <li>links (link varchar({@link #LINK_MAX_LENGTH}) primary key, newlink_key bigint auto_increment) </li>
+     * <li>request_history (link_key bigint, request_time timestamp,<br>
+     * foreign key (link_key) references links(newlink_key))</li>
+     * </ul>
+     * Подключение рекомендуется закрыть с помощью {@link #closeConnection}
+     * @param dbName имя файла БД. Указание пути в имени необязательно
+     * */
     public H2StorageService(String dbName){
         try {
             Class.forName("org.h2.Driver").newInstance();
@@ -24,6 +34,12 @@ public class H2StorageService implements StorageService {
             System.err.print(e.getMessage());
         }
     }
+
+    /**
+     * Сохранение ссылки в таблице links
+     * @return номер ключа для ссылки, который генерируется БД автоматически (автоинкрементальное поле newlink_key).
+     *  При попытке сохранить уже существующую ссылку в таблице вернется null и выведется текст в потоке ошибок
+     *  */
     @Override
     public String storeLink(String link) {
         String key=null;
@@ -48,19 +64,30 @@ public class H2StorageService implements StorageService {
         return key;
     }
 
+
+    /**
+     * Сохранение истории об использовании ключа в таблице request_history<br>
+     * При передаче несуществующего в базе ключа выведется текст в потоке ошибок
+     *  */
     @Override
-    public void storeHistory(String key){
+    public boolean storeHistory(String key){
         try {
             String query="insert into request_history values (?,CURRENT_TIMESTAMP())";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1,key);
             preparedStatement.execute();
+            return true;
         }catch(SQLException e){
             System.err.print(e.getMessage());
         }
+        return false;
     }
 
-
+    /**
+     * Возвращает ссылку по ключу
+     * @return оригинальная ссылка или null,
+     * если такого ключа нет или произошла какая-то ошибка при работе с БД
+     *  */
     @Override
     public String getKeyByLink(String link){
         String key=null;
@@ -80,6 +107,12 @@ public class H2StorageService implements StorageService {
         return key;
 
     }
+
+    /**
+     * Возвращает ключ по ссылке
+     * @return ключ для указанной ссылки или null,
+     * если такого ключа нет или произошла какая-то ошибка при работе с БД
+     *  */
     @Override
     public String getLinkByKey(String key){
         String link=null;
@@ -129,7 +162,12 @@ public class H2StorageService implements StorageService {
         return stat;
 
     }
-
+    /**Постраничное получение статистики использования всех ключей из БД H2 на основании истории
+     * @return массив статистик (из itemsOnPage элементов) с соответствующей страницы.
+     * Элементы с порядковым номером больше, чем общее количество ссылок в хранилище будут нулевыми.
+     * Пример - в хранилище 7 разных ссылок, переданы itemsOnPage=5, pageNumber=2.
+     * Будет возвращен массив с нулевыми последними тремя элементами.
+    */
     @Override
     public Statistics[] getAllStatistics(int itemsOnPage,int pageNumber){
         Statistics stats[]=new Statistics[itemsOnPage];
@@ -149,6 +187,15 @@ public class H2StorageService implements StorageService {
             System.err.print("error: "+e.getMessage());
         }
         return stats;
+    }
+
+    /**Закрытие соединения с БД*/
+    public void closeConnection(){
+        try{
+            connection.close();
+        }catch (SQLException e){
+            System.err.println(e.getMessage());
+        }
     }
 }
 
