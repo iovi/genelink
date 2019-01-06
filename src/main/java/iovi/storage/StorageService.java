@@ -28,4 +28,6 @@ public interface StorageService {
      * @return массив статистик (из itemsOnPage элементов) с соответствующей страницы.
      * */
     Statistics[] getAllStatistics(int itemsOnPage,int pageNumber);
+
+    void closeStorage();
 }

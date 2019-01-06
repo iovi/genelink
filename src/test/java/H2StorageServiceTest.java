@@ -37,7 +37,7 @@ public class H2StorageServiceTest {
             assertEquals(resultSet.next(),false);
 
             h2QueryExecutor.closeConnection();
-            service.closeConnection();
+            service.closeStorage();
             assertEquals(deleteDbFile(),true);
         }catch (Exception e){
             System.err.println(e.getMessage());

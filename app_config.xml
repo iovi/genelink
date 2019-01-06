@@ -4,5 +4,5 @@
     <wakeUpPeriod>10000</wakeUpPeriod>
     <linksInMemoryCount>100</linksInMemoryCount>
     <redirectionsBarrier>5</redirectionsBarrier>
-    <localHistorySize>10</localHistorySize>
+    <localHistorySize>1000</localHistorySize>
 </Settings>

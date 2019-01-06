@@ -17,7 +17,7 @@ public class H2StorageService implements StorageService {
      * <li>request_history (link_key bigint, request_time timestamp,<br>
      * foreign key (link_key) references links(newlink_key))</li>
      * </ul>
-     * Подключение рекомендуется закрыть с помощью {@link #closeConnection}
+     * Подключение рекомендуется закрыть с помощью {@link #closeStorage}
      * @param dbName имя файла БД. Указание пути в имени необязательно
      * */
     public H2StorageService(String dbName){
@@ -190,7 +190,8 @@ public class H2StorageService implements StorageService {
     }
 
     /**Закрытие соединения с БД*/
-    public void closeConnection(){
+    @Override
+    public void closeStorage(){
         try{
             connection.close();
         }catch (SQLException e){

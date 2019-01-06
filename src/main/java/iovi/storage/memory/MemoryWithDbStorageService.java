@@ -12,23 +12,27 @@ import java.util.Map;
 import static java.util.Collections.*;
 
 public class MemoryWithDbStorageService implements StorageService,InMemoryStorageService {
+    static final long WAKE_UP_PERIOD=10000;
+    static final int LOCAL_HISTORY_SIZE=1000;
     Map<String,String> storage;
     List<String> history;
-
     StorageService dbService;
+    Thread updater;
 
     public MemoryWithDbStorageService(StorageService dbService){
 
         storage=synchronizedMap(new HashMap<>());
         history=synchronizedList(new ArrayList<String>());
         this.dbService = dbService;
+        MemoryUpdatingThread updater=new MemoryUpdatingThread(WAKE_UP_PERIOD,this);
+        updater.start();
+        this.updater=updater;
     }
 
     @Override
     public boolean storeHistory(String key) {
         boolean result=true;
-        int localHistorySize=SettingsExtractor.extractSettings().getLocalHistorySize();
-        if (history.size()> localHistorySize)
+        if (history.size()> LOCAL_HISTORY_SIZE)
             result=storeHistory2Db();
         else
             history.add(key);
@@ -41,7 +45,6 @@ public class MemoryWithDbStorageService implements StorageService,InMemoryStorag
             result=dbService.storeHistory(key);
         }
         history.clear();
-        System.out.println("history stored");
         return result;
     }
     @Override
@@ -61,9 +64,6 @@ public class MemoryWithDbStorageService implements StorageService,InMemoryStorag
         String link=storage.get(key);
         if (link==null){
             link= dbService.getLinkByKey(key);
-            System.out.println("from DB");
-        } else{
-            System.out.println("from storage");
         }
         return link;
     }
@@ -82,14 +82,26 @@ public class MemoryWithDbStorageService implements StorageService,InMemoryStorag
 
     @Override
     public void buildInMemoryStorage(Settings settings){
-        Statistics stats[]= dbService.getAllStatistics(settings.getLinksInMemoryCount(),1);
+        Statistics stats[]= dbService.getAllStatistics(LOCAL_HISTORY_SIZE,1);
         storage.clear();
-        System.out.println("\nStorage cleared");
         for (int i=0;i<stats.length && stats[i]!=null;i++){
             if (stats[i].getCount()>settings.getBarrierForMemory()){
                 storage.put(stats[i].getKey(),stats[i].getOriginalLink());
                 System.out.println(stats[i].getKey()+" Added to storage");
             }
         }
+    }
+
+    @Override
+    public void closeStorage(){
+        updater.interrupt();
+        try{
+            updater.join();
+        }
+        catch (InterruptedException e){
+            System.err.println(e.getMessage());
+        }
+        storeHistory2Db();
+        dbService.closeStorage();
     }
 }
